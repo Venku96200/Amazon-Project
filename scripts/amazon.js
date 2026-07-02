@@ -79,9 +79,16 @@ Now Lets think about what happens when we press ADD TO CART
             b) If it is in the cart, increase the quantity
             c) If its not in the cart, add it to the cart
    
------------------------------------------------------------------------
+Generally it isnt reccomanded to use product name to identify the product, hence we use product_id            
+-----------------------------------------------------------------------------------------------
 
-Generally it isnt reccomanded to use product name to identify the product, hence we use product_id
+Making The cart quantity on the top right of the page interactive
+
+1) Calaculate the Quantity
+2) Put that quantity on the page
+
+
+
 
 */
 
@@ -154,7 +161,8 @@ document.querySelectorAll('.js-add-to-cart')
         const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
         console.log(button.dataset);
         let matchingItem;
-        
+
+        //looping and finding which key is pressed
         cart.forEach((item)=>{
             if(item.productid===productid){
                 matchingItem=item;
@@ -168,6 +176,16 @@ document.querySelectorAll('.js-add-to-cart')
                 quantity:1
             });
         }
-        console.log(cart);
+
+        //Finding the total quantity
+        let cartquantity=0;
+        cart.forEach((item)=>{
+            cartquantity+=item.quantity;
+        });
+        console.log(cartquantity);
+
+        //putting the quantity on the page using DOM
+        document.querySelector('.js-cart-quantity').innerHTML=cartquantity;
+
     });
  });
