@@ -53,6 +53,40 @@ const products=[{
 // Now we have 1) SAVED THE DATA // I have commented out because we are using a external array in data folder
 // LETS 2) GENERATE HTML
 
+//------------------------------------------------------------------------------------------
+
+/*
+Now Lets think about what happens when we press ADD TO CART
+1) We created an cart.js file in data folder
+2) Made an array called cart in cart.js
+3) Made an eventListener of ADD TO CART button for each product
+4) HOW TO WE KNOW WHICH PRODUCT TO ADD?
+--> Data Attribute
+        # is just another HTML attribute
+        # Allows us to attach any information to an element
+        # have to start with 'data-'  then give it any name
+        # we use .dataset property to get all the data attribute of that element
+
+5) when we press Add to cart button of a product,   
+   the eventlistener of that button .dataset property
+   to get the name of the product and hence add
+   a object with format{productName: xyz , quantity:1} in the cart array.
+   
+6) Problem- How to increase the quantity of the 
+            product instead of adding it again
+            as new object   
+            a) Check if the product is already in the cart (using forEach on the cart array)
+            b) If it is in the cart, increase the quantity
+            c) If its not in the cart, add it to the cart
+   
+-----------------------------------------------------------------------
+
+Generally it isnt reccomanded to use product name to identify the product, hence we use product_id
+
+*/
+
+
+
 
 
 let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
@@ -76,7 +110,7 @@ const html_of_each_product=`<div class="product-container">
                             </div>
 
                             <div class="product-price">
-                                $${(product.pricecents/100).toFixed(2)}           
+                                $${(product.priceCents/100).toFixed(2)}           
                             </div>
 
                             <div class="product-quantity-container">
@@ -101,7 +135,7 @@ const html_of_each_product=`<div class="product-container">
                                 Added
                             </div>
 
-                            <button class="add-to-cart-button button-primary">
+                            <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}" >
                                 Add to Cart
                             </button>
                             </div>`;
@@ -111,3 +145,29 @@ productsHTML+=html_of_each_product;
 //Putting the productsHTML on the webpage using DOM
 
 document.querySelector('.js-products-grid').innerHTML=productsHTML;
+
+// Making all the ADD TO CART buttons interactive
+
+document.querySelectorAll('.js-add-to-cart')
+.forEach((button)=>{
+    button.addEventListener('click',()=>{
+        const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
+        console.log(button.dataset);
+        let matchingItem;
+        
+        cart.forEach((item)=>{
+            if(item.productid===productid){
+                matchingItem=item;
+            }
+        });  
+        if(matchingItem){
+            matchingItem.quantity+=1;
+        }else{
+            cart.push({
+                productid: productid,
+                quantity:1
+            });
+        }
+        console.log(cart);
+    });
+ });
