@@ -12,7 +12,7 @@ the HTML code for product-containers using JAVASCRIPT*/
 objects for each of the product, and each object contain
 details about that product Ex:- product_img, rating, price etc*/
 
-
+/*
 const products=[{
     image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
     name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
@@ -38,14 +38,25 @@ const products=[{
     },
     pricecents:799
 
+},{
+    image:'images/products/black-2-slot-toaster.jpg',
+    name: '2 Slot Toaster -Black',
+    rating:{
+        stars:5,
+        count:2197
+    },
+    pricecents:1899
 }];
+*/
 
-// Now we have 1) SAVED THE DATA
+
+// Now we have 1) SAVED THE DATA // I have commented out because we are using a external array in data folder
 // LETS 2) GENERATE HTML
 
 
+
 let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
-products.forEach((product)=>{
+products.forEach((product)=>{  //The products array is coming from data/products.js
 const html_of_each_product=`<div class="product-container">
                             <div class="product-image-container">
                                 <img class="product-image"
