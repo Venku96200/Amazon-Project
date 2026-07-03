@@ -134,7 +134,7 @@ Modules:- Contains variables inside a file, Hence no conflicts outside the file
 */
 
 import {cart} from '../data/cart.js';
-
+import {products} from '../data/products.js';
 
 
 
