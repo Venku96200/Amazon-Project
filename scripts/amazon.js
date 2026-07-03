@@ -121,7 +121,7 @@ const html_of_each_product=`<div class="product-container">
                             </div>
 
                             <div class="product-quantity-container">
-                                <select>
+                                <select class="js-quantity-selector-${product.id}">
                                 <option selected value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -153,13 +153,23 @@ productsHTML+=html_of_each_product;
 
 document.querySelector('.js-products-grid').innerHTML=productsHTML;
 
+// Getting the quantity from Quantity selector
+let quantity_selected=0;
+document.querySelector('.js-quantity-selector')
+
+
 // Making all the ADD TO CART buttons interactive
 
 document.querySelectorAll('.js-add-to-cart')
 .forEach((button)=>{
     button.addEventListener('click',()=>{
         const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
-        console.log(button.dataset);
+
+        //Getting the quantity from quantity selector
+        let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value;
+
+        
+        
         let matchingItem;
 
         //looping and finding which key is pressed
@@ -169,13 +179,15 @@ document.querySelectorAll('.js-add-to-cart')
             }
         });  
         if(matchingItem){
-            matchingItem.quantity+=1;
+            matchingItem.quantity+=Number(Quantity);
         }else{
             cart.push({
                 productid: productid,
-                quantity:1
+                quantity: Number(Quantity)
             });
         }
+        console.log(cart);
+
 
         //Finding the total quantity
         let cartquantity=0;
