@@ -129,15 +129,20 @@ Modules:- Contains variables inside a file, Hence no conflicts outside the file
 
     #   We dont have to worry about the order of files   
 
+Ways to import multiple files from same folder
 
-           
+import * cartModule from '../data/cart.js';
+cartModule.cart
+cartModule.addToCart('id');
+
+is similar to
+
+import {cart, addtocart} from '../data/cart.js';
+             
 */
 
-import {cart} from '../data/cart.js';
+import {cart, addtocart} from '../data/cart.js';
 import {products} from '../data/products.js';
-
-
-
 
 
 let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
@@ -203,52 +208,40 @@ document.querySelector('.js-quantity-selector')
 
 
 // Making all the ADD TO CART buttons interactive
+// We moved the addtocart() function to cart.js
 
-document.querySelectorAll('.js-add-to-cart')
-.forEach((button)=>{
-    button.addEventListener('click',()=>{
-        const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
 
-        //Making that the ADDED pops up
+//Making that the ADDED pops up
+function making_added_popup(productid){
         document.querySelector(`.js-added-to-cart-${productid}`).classList.add('js-done');
         document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('added-to-cart');
-        intervalid= setTimeout(()=>{
+        setTimeout(()=>{
             document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('js-done');
             document.querySelector(`.js-added-to-cart-${productid}`).classList.add('added-to-cart');
-            intervalid=0;
-        },1000);    
-        //Getting the quantity from quantity selector
-        let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value;
+            
+        },1000); 
+}
 
-        
-        
-        let matchingItem;  // Used to store object of the product we clicked
-        //looping and finding which key is pressed
-        cart.forEach((item)=>{
-            if(item.productid===productid){
-                matchingItem=item;
-            }
-        });  
-        if(matchingItem){
-            matchingItem.quantity+=Number(Quantity);
-        }else{
-            cart.push({
-                productid: productid,
-                quantity: Number(Quantity)
-            });
-        }
-        console.log(cart);
-
-
-        //Finding the total quantity
+//Finding the total quantity & putting the quantity on the page using DOM
+function total_quantity(){
         let cartquantity=0;
-        cart.forEach((item)=>{
-            cartquantity+=item.quantity;
+        cart.forEach((cartItem)=>{
+            cartquantity+=cartItem.quantity;
         });
         console.log(cartquantity);
 
         //putting the quantity on the page using DOM
         document.querySelector('.js-cart-quantity').innerHTML=cartquantity;
+}
 
+// WHAT ALL SHOULD HAPPEN WHEN WE PRESS ADD TO CART BUTTON
+document.querySelectorAll('.js-add-to-cart')
+.forEach((button)=>{
+    button.addEventListener('click',()=>{
+        const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
+        let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value; //Getting the quantity from quantity selector
+        making_added_popup(productid);
+        addtocart(productid,Quantity);
+        total_quantity();
     });
  });
