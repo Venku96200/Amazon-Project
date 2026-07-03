@@ -87,10 +87,54 @@ Making The cart quantity on the top right of the page interactive
 1) Calaculate the Quantity
 2) Put that quantity on the page
 
+-----------------------------------------------------------------------------------------
+
+Modules:-
+        # Is a feature of js.
+        # A better way to organize our code
+
+problem:- Rn we are using <script> elements to import the
+          cart.js,product.js,amazon.js  inthe amazon.html.
+          But a problem here is that, as we have delcared
+          cart=[] array in cart.js , we cannot create another cart=[]
+          in any of the amazon.js,product.js or other files
+          connected.    
+          # Hence This Creates Naming Conflicts
+
+                                        Imagine each JavaScript file is a classroom.
+                                        Without modules:
+                                        Anyone can walk into any classroom and use anything. It's messy.
+                                        With modules:
+                                        Each classroom has a reception desk.
+                                        Only the items placed on the desk (export) can be taken.
+                                        Visitors must ask for them (import).
+                                        This keeps code organized and prevents accidental conflicts.
+                                        Any JavaScript file that is loaded directly from HTML and uses import or export must be loaded with type="module".
+
+Modules:- Contains variables inside a file, Hence no conflicts outside the file      
+         1) Create a file
+         2) Dont load the file with <script>
+
+         any variable we create inside the file,
+         will be consisted inside the file
+
+         # How to get a variable out of a file
+
+         1) Add type="module" attribute  
+         2) Export
+         3) import
+         .. to get out of the folder
+
+         Modules only work with LIVE SERVER
+
+    #   We dont have to worry about the order of files   
 
 
-
+           
 */
+
+import {cart} from '../data/cart.js';
+
 
 
 
@@ -137,7 +181,7 @@ const html_of_each_product=`<div class="product-container">
 
                             <div class="product-spacer"></div>
 
-                            <div class="added-to-cart">
+                            <div class="added-to-cart js-added-to-cart-${product.id}">
                                 <img src="images/icons/checkmark.png">
                                 Added
                             </div>
@@ -165,13 +209,20 @@ document.querySelectorAll('.js-add-to-cart')
     button.addEventListener('click',()=>{
         const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
 
+        //Making that the ADDED pops up
+        document.querySelector(`.js-added-to-cart-${productid}`).classList.add('js-done');
+        document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('added-to-cart');
+        intervalid= setTimeout(()=>{
+            document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('js-done');
+            document.querySelector(`.js-added-to-cart-${productid}`).classList.add('added-to-cart');
+            intervalid=0;
+        },1000);    
         //Getting the quantity from quantity selector
         let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value;
 
         
         
-        let matchingItem;
-
+        let matchingItem;  // Used to store object of the product we clicked
         //looping and finding which key is pressed
         cart.forEach((item)=>{
             if(item.productid===productid){
