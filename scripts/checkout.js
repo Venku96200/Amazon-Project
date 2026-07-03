@@ -17,14 +17,20 @@ We will now deal with fixing radio selectors
 <input type="radio" name="name1">
 
 If a set of radio selectors have same name, then we can select one of them
+-----------------------------------------------------
+
+Lets make delete button interactive
 */
-import {cart} from '../data/cart.js';
+import {cart, removefromCart} from '../data/cart.js';
 import { products } from '../data/products.js';
-import {formatCurrency} from './utils/money.js'
+import {formatCurrency} from './utils/money.js';
+
 
 
 let cartSummaryHTML='';
-cart.forEach((cartItem)=>{
+
+function displaying_cart(cart){
+    cart.forEach((cartItem)=>{
     const productID= cartItem.productid;
     let matchingproduct;
     products.forEach((product)=>{
@@ -57,7 +63,7 @@ cart.forEach((cartItem)=>{
                                     <span class="update-quantity-link link-primary">
                                         Update
                                     </span>
-                                    <span class="delete-quantity-link link-primary">
+                                    <span class="delete-quantity-link link-primary js-delete-link " data-delete-id=${matchingproduct.id}>
                                         Delete
                                     </span>
                                     </div>
@@ -113,3 +119,25 @@ cart.forEach((cartItem)=>{
 
 });
 document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML;
+
+}
+displaying_cart(cart);
+
+
+// Working With delete button
+
+document.querySelectorAll('.js-delete-link')
+.forEach((link)=>{
+    link.addEventListener('click',()=>{
+        const product_id=link.dataset.deleteId;
+        removefromCart(product_id);
+        
+    });
+
+});
+
+    
+
+        
+
+

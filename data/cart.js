@@ -1,6 +1,6 @@
 // Here will only store data for the carts
 
-export const cart=[{
+export let cart=[{
     productid: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     quantity:2,
 },{
@@ -9,6 +9,7 @@ export const cart=[{
 }];  // This file can be used outside of js
 
 
+//Function to add to cart
 export function addtocart(productid, Quantity){
         let matchingItem;  // Used to store object of the product we clicked
         //looping and finding which key is pressed
@@ -25,4 +26,17 @@ export function addtocart(productid, Quantity){
                 quantity: Number(Quantity)
             });
         }
+}
+
+// Function to delete from cart
+
+export function removefromCart(productid){
+    const newCart=[];
+    cart.forEach((cartItem)=>{
+        if(cartItem.productid !==productid){
+            newCart.push(cartItem);
+        }
+    });
+    cart=newCart
+
 }
