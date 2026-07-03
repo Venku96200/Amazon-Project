@@ -143,6 +143,7 @@ import {cart, addtocart} from '../data/cart.js';
 
 import {cart, addtocart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import { formatCurrency } from './utils/money.js';
 
 
 let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
@@ -166,7 +167,7 @@ const html_of_each_product=`<div class="product-container">
                             </div>
 
                             <div class="product-price">
-                                $${(product.priceCents/100).toFixed(2)}           
+                                $${formatCurrency(product.priceCents)}           
                             </div>
 
                             <div class="product-quantity-container">

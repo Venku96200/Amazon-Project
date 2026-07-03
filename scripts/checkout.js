@@ -3,9 +3,24 @@
 1) We will import the cart array here and iterate through it to generate
 HTML
 2) We will also import the product array to get the product details as we know the productid by iterating in cart
+3) Finally we will put all the generated HTML of all the products into an main HTML file( cartsummaryHTML and show it in webpage using DOM)
+
+-------------------------------------------
+
+We are introducing a new folder called utils(utilities) this folder stores the important snippet of code that is
+shared by multiple files and we can just use them using module
+EX:- money.js
+
+------------------------------------------------------
+
+We will now deal with fixing radio selectors
+<input type="radio" name="name1">
+
+If a set of radio selectors have same name, then we can select one of them
 */
 import {cart} from '../data/cart.js';
 import { products } from '../data/products.js';
+import {formatCurrency} from './utils/money.js'
 
 
 let cartSummaryHTML='';
@@ -33,7 +48,7 @@ cart.forEach((cartItem)=>{
                                     ${matchingproduct.name}
                                     </div>
                                     <div class="product-price">
-                                    $${matchingproduct.priceCents/100}
+                                    $${(formatCurrency(matchingproduct.priceCents))}
                                     </div>
                                     <div class="product-quantity">
                                     <span>
@@ -55,7 +70,7 @@ cart.forEach((cartItem)=>{
                                     <div class="delivery-option">
                                     <input type="radio" checked
                                         class="delivery-option-input"
-                                        name="delivery-option-1">
+                                        name="delivery-option-${matchingproduct.id}">
                                     <div>
                                         <div class="delivery-option-date">
                                         Tuesday, June 21
@@ -68,7 +83,7 @@ cart.forEach((cartItem)=>{
                                     <div class="delivery-option">
                                     <input type="radio"
                                         class="delivery-option-input"
-                                        name="delivery-option-1">
+                                        name="delivery-option-${matchingproduct.id}">
                                     <div>
                                         <div class="delivery-option-date">
                                         Wednesday, June 15
@@ -81,7 +96,7 @@ cart.forEach((cartItem)=>{
                                     <div class="delivery-option">
                                     <input type="radio"
                                         class="delivery-option-input"
-                                        name="delivery-option-1">
+                                        name="delivery-option-${matchingproduct.id}">
                                     <div>
                                         <div class="delivery-option-date">
                                         Monday, June 13
