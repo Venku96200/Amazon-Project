@@ -1,12 +1,13 @@
 // Here will only store data for the carts
 
-export let cart=[{
-    productid: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    quantity:2,
-},{
-    productid: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-    quantity:1
-}];  // This file can be used outside of js
+export let cart= JSON.parse(localStorage.getItem('cart'))|| [];           // This file can be used outside of js
+
+
+// We are implementing LocalStorage to save the items in the cart even if we switch webpage from Homepage to checkoutpage
+// Things to rem:-  1) Localstorage only stores string, hence we will have to use json
+function saveToStorage(){
+    localStorage.setItem('cart',JSON.stringify(cart));
+}
 
 
 //Function to add to cart
@@ -26,6 +27,7 @@ export function addtocart(productid, Quantity){
                 quantity: Number(Quantity)
             });
         }
+        saveToStorage(); //calling this function to save the updated cart into localstorage
 }
 
 // Function to delete from cart
@@ -38,5 +40,6 @@ export function removefromCart(productid){
         }
     });
     cart=newCart 
+     saveToStorage(); //calling this function to save the updated cart into localstorage
 
 }
