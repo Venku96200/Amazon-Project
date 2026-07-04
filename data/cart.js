@@ -31,12 +31,12 @@ export function addtocart(productid, Quantity){
 // Function to delete from cart
 
 export function removefromCart(productid){
-    const newCart=[];
+    const newCart=[];                       //  We create a new array, which will contain all the products except the productid one
     cart.forEach((cartItem)=>{
         if(cartItem.productid !==productid){
             newCart.push(cartItem);
         }
     });
-    cart=newCart
+    cart=newCart 
 
 }

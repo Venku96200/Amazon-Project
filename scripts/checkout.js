@@ -23,8 +23,7 @@ Lets make delete button interactive
 */
 import {cart, removefromCart} from '../data/cart.js';
 import { products } from '../data/products.js';
-import {formatCurrency} from './utils/money.js';
-
+import {formatCurrency} from './utils/money.js'
 
 
 let cartSummaryHTML='';
@@ -40,7 +39,7 @@ function displaying_cart(cart){
     });
 
     cartSummaryHTML+=`
-                        <div class="cart-item-container">
+                        <div class="cart-item-container js-cart-delete-${matchingproduct.id}">
                                 <div class="delivery-date">
                                 Delivery date: Tuesday, June 21
                                 </div>
@@ -126,18 +125,17 @@ displaying_cart(cart);
 
 // Working With delete button
 
+
 document.querySelectorAll('.js-delete-link')
 .forEach((link)=>{
     link.addEventListener('click',()=>{
-        const product_id=link.dataset.deleteId;
-        removefromCart(product_id);
-        
-    });
-
-});
+        const product_ID=link.dataset.deleteId; // We get the productid of the product we pressed delete.
+        removefromCart(product_ID); 
+        let deleted_element=document.querySelector(`.js-cart-delete-${product_ID}`);
+        deleted_element.remove();     // .remove property removes the element from document
+    })
 
     
-
-        
+});
 
 
