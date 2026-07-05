@@ -143,7 +143,7 @@ import {cart, addtocart} from '../data/cart.js';
 
 import {cart, addtocart, calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
-import { formatCurrency } from './utils/money.js';
+import  formatCurrency  from './utils/money.js';
 
 
 

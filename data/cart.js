@@ -6,9 +6,11 @@ if (!cart) {
   cart = [{
     productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity: 2,
+    deliveryOptionId: '1'
   }, {
     productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-    quantity: 1
+    quantity: 1,
+    deliveryOptionId: '2'
   }];
 }
 
@@ -20,12 +22,13 @@ function saveToStorage(){
 }
 
 
+
 //Function to add to cart
 export function addtocart(productid, Quantity){
         let matchingItem;  // Used to store object of the product we clicked
         //looping and finding which key is pressed
         cart.forEach((cartItem)=>{
-            if(cartItem.productid===productid){
+            if(cartItem.productId===productid){
                 matchingItem=cartItem;
             }
         });  
@@ -33,8 +36,9 @@ export function addtocart(productid, Quantity){
             matchingItem.quantity+=Number(Quantity);
         }else{
             cart.push({
-                productid: productid,
-                quantity: Number(Quantity)
+                productId: productid,
+                quantity: Number(Quantity),
+                deliveryOptionId:'1'
             });
         }
         saveToStorage(); //calling this function to save the updated cart into localstorage
@@ -46,7 +50,7 @@ export function addtocart(productid, Quantity){
 export function removefromCart(productid){
     const newCart=[];                       //  We create a new array, which will contain all the products except the productid one
     cart.forEach((cartItem)=>{
-        if(cartItem.productid !==productid){
+        if(cartItem.productId !==productid){
             newCart.push(cartItem);
         }
     });
@@ -66,7 +70,7 @@ export function calculateCartQuantity(){
 export function updateQuantity(productid,newQuantity){
     let matchingitem;
     cart.forEach((item)=>{
-        if(productid=== item.productid){
+        if(productid=== item.productId){
             matchingitem=item;
         }
     });

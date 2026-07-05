@@ -22,18 +22,81 @@ If a set of radio selectors have same name, then we can select one of them
 Lets make delete button interactive
 
 ------------------------------------------------------
+Lesson 15:- External Libraries, MVC, Finish the checkout page
+
+External libraries:- the code that is outside our project
+
+# We will be using an external library called DayJs
+  to get the current date ,day and  time
+
+# we now have a function 'dayjs()'
+
+# Best Practice:-
+When we need something complicated,
+-Try to find an external library first.
+-Before writing the code ourselves.
+
+---------------------------------------------
+ESM Version
+A version that works with JavaScript Modules
+ESM= EcmaScript Module,  (EcmaScript=JavaScript)
+
+---------------------------------------------------
+
+Default export:- Use:- Just to remove curly bracket while importing
+ Each file can have only one default export
+
+ -----------------------------------
+
+ Starting with Delivery Date:-
+
+ 1) We store the delivery options seperately in a object as they are same for all products
+ 2) And then in cart for each product we create Key(deliveryOptionId) which points to the options in the object stored earlier
+     This Is Known as Normalising the Data
+
+ 3) We delete the cart from localstorage and put this new cart into it 
+ 4) Steps:-    
+             1) Loop through deliveryOptions
+             2) for each option generate some HTML
+             3) Combine the HTML together  
+
+
+
+
+
+
+
+
+
+
+
 
 */
 import {calculateCartQuantity, cart, removefromCart, updateQuantity} from '../data/cart.js';
 import { products } from '../data/products.js';
-import {formatCurrency} from './utils/money.js'
+import formatCurrency from './utils/money.js';                                // This is known as Default Export(no curly brackets needed)
+import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
+import dayjs  from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'; // This is known as Default Export(no curly brackets needed)
+import {deliveryOptions} from '../data/deliveryOptions.js';
+
+//Running the function inside External Librarary
+
+hello();
+//The dayjs() have bunch of methods we can work on
+const today=dayjs();
+const deliveryDate=today.add(7,'days');
+deliveryDate.format('dddd, MMMM, D');   // To know how these formats came check dayjs documentation
 
 
 let cartSummaryHTML='';
 
 function displaying_cart(cart){
+    
     cart.forEach((cartItem)=>{
-    const productID= cartItem.productid;
+    const productID= cartItem.productId;
+
+    console.log(productID);
+    
     let matchingproduct;
     products.forEach((product)=>{
         if(product.id===productID){
@@ -41,11 +104,27 @@ function displaying_cart(cart){
         }
     });
 
+    const deliverOptionId=cartItem.deliveryOptionId;
+    let deliveryOption;
 
+    deliveryOptions.forEach((option)=>{
+        if(deliverOptionId===option.id){
+            deliveryOption=option;
+        }
+    });
+
+        const today= dayjs();
+        const deliverydate = today.add(
+            deliveryOption.deliveryDays,
+            'days'
+        )
+        const dateString=deliverydate.format('dddd, MMMM D');
+
+    
     cartSummaryHTML+=`
                         <div class="cart-item-container js-cart-item-container-${matchingproduct.id}">
                                 <div class="delivery-date">
-                                Delivery date: Tuesday, June 21
+                                Delivery date: ${dateString}
                                 </div>
 
                                 <div class="cart-item-details-grid">
@@ -80,45 +159,7 @@ function displaying_cart(cart){
                                     <div class="delivery-options-title">
                                     Choose a delivery option:
                                     </div>
-                                    <div class="delivery-option">
-                                    <input type="radio" checked
-                                        class="delivery-option-input"
-                                        name="delivery-option-${matchingproduct.id}">
-                                    <div>
-                                        <div class="delivery-option-date">
-                                        Tuesday, June 21
-                                        </div>
-                                        <div class="delivery-option-price">
-                                        FREE Shipping
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="delivery-option">
-                                    <input type="radio"
-                                        class="delivery-option-input"
-                                        name="delivery-option-${matchingproduct.id}">
-                                    <div>
-                                        <div class="delivery-option-date">
-                                        Wednesday, June 15
-                                        </div>
-                                        <div class="delivery-option-price">
-                                        $4.99 - Shipping
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="delivery-option">
-                                    <input type="radio"
-                                        class="delivery-option-input"
-                                        name="delivery-option-${matchingproduct.id}">
-                                    <div>
-                                        <div class="delivery-option-date">
-                                        Monday, June 13
-                                        </div>
-                                        <div class="delivery-option-price">
-                                        $9.99 - Shipping
-                                        </div>
-                                    </div>
-                                    </div>
+                                    ${deliveryOptionsHTML(matchingproduct, cartItem)}
                                 </div>
                                 </div>
                             </div>
@@ -129,6 +170,41 @@ document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML;
 
 }
 displaying_cart(cart);
+
+
+
+// Working with delivery options
+function deliveryOptionsHTML(matchingproduct, cartItem){
+    let HTML='';
+    deliveryOptions.forEach((option)=>{
+        const today= dayjs();
+        const deliverydate = today.add(
+            option.deliveryDays,
+            'days'
+        )
+        const dateString=deliverydate.format('dddd, MMMM D');
+        
+        const priceString=option.pricecents===0 ? 'Free Shipping' : `$${formatCurrency(option.pricecents)} -Shipping`;
+        const isChecked= option.id===cartItem.deliveryOptionId;
+        HTML+=
+        `<div class="delivery-option">
+            <input type="radio"
+                ${isChecked ? 'checked':''}
+                class="delivery-option-input"
+                name="delivery-option-${matchingproduct.id}">
+            <div>
+                <div class="delivery-option-date">
+                ${dateString}
+                </div>
+                <div class="delivery-option-price">
+                ${priceString}
+                </div>
+            </div>
+        </div>`
+
+    });
+    return HTML;
+}
 
 
 // Working With delete button
