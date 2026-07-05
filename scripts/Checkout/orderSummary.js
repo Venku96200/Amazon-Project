@@ -83,12 +83,12 @@ MVC= Makes sure the page always matches the data
 
 
 */
-import {calculateCartQuantity, cart, removefromCart, updateQuantity, updateDeliveryOption} from '../../cart.js';
-import { products } from '../../data/products.js';
-import formatCurrency from '..money.js';                                // This is known as Default Export(no curly brackets needed)
+import {calculateCartQuantity, cart, removefromCart, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
+import { products, getProduct } from '../../data/products.js';
+import formatCurrency from '../utils/money.js';                                // This is known as Default Export(no curly brackets needed)
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 import dayjs  from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'; // This is known as Default Export(no curly brackets needed)
-import {deliveryOptions} from '../../deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
 
 //Running the function inside External Librarary
 
@@ -109,21 +109,11 @@ export function renderOrderSummary(){
 
             
             
-            let matchingproduct;
-            products.forEach((product)=>{
-                if(product.id===productID){
-                    matchingproduct=product;
-                }
-            });
+            const matchingproduct=getProduct(productID);
+            
 
             const deliverOptionId=cartItem.deliveryOptionId;
-            let deliveryOption;
-
-            deliveryOptions.forEach((option)=>{
-                if(deliverOptionId===option.id){
-                    deliveryOption=option;
-                }
-            });
+            const deliveryOption=getDeliveryOption(deliverOptionId);
 
                 const today= dayjs();
                 const deliverydate = today.add(
