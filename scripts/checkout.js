@@ -61,7 +61,9 @@ Default export:- Use:- Just to remove curly bracket while importing
              3) Combine the HTML together  
 
 
-
+5) Make the radio buttons Interactive
+      1) Update deliveryOptionId in the cart
+      2) Update the page
 
 
 
@@ -72,7 +74,7 @@ Default export:- Use:- Just to remove curly bracket while importing
 
 
 */
-import {calculateCartQuantity, cart, removefromCart, updateQuantity} from '../data/cart.js';
+import {calculateCartQuantity, cart, removefromCart, updateQuantity, updateDeliveryOption} from '../data/cart.js';
 import { products } from '../data/products.js';
 import formatCurrency from './utils/money.js';                                // This is known as Default Export(no curly brackets needed)
 import {hello} from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
@@ -95,7 +97,7 @@ function displaying_cart(cart){
     cart.forEach((cartItem)=>{
     const productID= cartItem.productId;
 
-    console.log(productID);
+    
     
     let matchingproduct;
     products.forEach((product)=>{
@@ -123,7 +125,7 @@ function displaying_cart(cart){
     
     cartSummaryHTML+=`
                         <div class="cart-item-container js-cart-item-container-${matchingproduct.id}">
-                                <div class="delivery-date">
+                                <div class="delivery-date delivery-date-id-${matchingproduct.id}">
                                 Delivery date: ${dateString}
                                 </div>
 
@@ -173,6 +175,8 @@ displaying_cart(cart);
 
 
 
+
+
 // Working with delivery options
 function deliveryOptionsHTML(matchingproduct, cartItem){
     let HTML='';
@@ -187,11 +191,12 @@ function deliveryOptionsHTML(matchingproduct, cartItem){
         const priceString=option.pricecents===0 ? 'Free Shipping' : `$${formatCurrency(option.pricecents)} -Shipping`;
         const isChecked= option.id===cartItem.deliveryOptionId;
         HTML+=
-        `<div class="delivery-option">
+        `<div class="delivery-option js-delivery-option" data-product-id=${matchingproduct.id} data-delivery-option-id=${option.id}>
             <input type="radio"
                 ${isChecked ? 'checked':''}
-                class="delivery-option-input"
-                name="delivery-option-${matchingproduct.id}">
+                class="delivery-option-input "
+                name="delivery-option-${matchingproduct.id}"
+                >
             <div>
                 <div class="delivery-option-date">
                 ${dateString}
@@ -205,6 +210,16 @@ function deliveryOptionsHTML(matchingproduct, cartItem){
     });
     return HTML;
 }
+//What happens when we click radio button
+document.querySelectorAll('.js-delivery-option')
+.forEach((element)=>{
+    element.addEventListener('click', ()=>{
+        const productId=element.dataset.productId;
+        const deliveryOptionId=element.dataset.deliveryOptionId;
+        updateDeliveryOption(productId,deliveryOptionId);
+    });
+
+});
 
 
 // Working With delete button

@@ -78,3 +78,16 @@ export function updateQuantity(productid,newQuantity){
     saveToStorage();
 
 }
+
+export function updateDeliveryOption(productId, deliveryOptionId){
+    let matchingItem;  // Used to store object of the product we clicked
+        //looping and finding which key is pressed
+        cart.forEach((cartItem)=>{
+            if(cartItem.productId===productId){
+                matchingItem=cartItem;
+            }
+        }); 
+
+     matchingItem.deliveryOptionId=deliveryOptionId;
+     saveToStorage();
+}
