@@ -141,9 +141,10 @@ import {cart, addtocart} from '../data/cart.js';
              
 */
 
-import {cart, addtocart} from '../data/cart.js';
+import {cart, addtocart, calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
+
 
 
 let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
@@ -224,16 +225,12 @@ function making_added_popup(productid){
 }
 
 //Finding the total quantity & putting the quantity on the page using DOM
-function total_quantity(){
-        let cartquantity=0;
-        cart.forEach((cartItem)=>{
-            cartquantity+=cartItem.quantity;
-        });
-        console.log(cartquantity);
-
-        //putting the quantity on the page using DOM
-        document.querySelector('.js-cart-quantity').innerHTML=cartquantity;
+function updateCartquantity(){
+    document.querySelector('.js-cart-quantity').innerHTML=calculateCartQuantity(); // Updates the cartquantity when page refreshes.
 }
+updateCartquantity();
+
+
 
 // WHAT ALL SHOULD HAPPEN WHEN WE PRESS ADD TO CART BUTTON
 document.querySelectorAll('.js-add-to-cart')
@@ -243,6 +240,6 @@ document.querySelectorAll('.js-add-to-cart')
         let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value; //Getting the quantity from quantity selector
         making_added_popup(productid);
         addtocart(productid,Quantity);
-        total_quantity();
+        updateCartquantity();
     });
  });

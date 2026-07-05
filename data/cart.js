@@ -1,6 +1,16 @@
 // Here will only store data for the carts
 
-export let cart= JSON.parse(localStorage.getItem('cart'))|| [];           // This file can be used outside of js
+export let cart= JSON.parse(localStorage.getItem('cart'));           // This file can be used outside of js
+
+if (!cart) {
+  cart = [{
+    productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+    quantity: 2,
+  }, {
+    productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+    quantity: 1
+  }];
+}
 
 
 // We are implementing LocalStorage to save the items in the cart even if we switch webpage from Homepage to checkoutpage
@@ -28,6 +38,7 @@ export function addtocart(productid, Quantity){
             });
         }
         saveToStorage(); //calling this function to save the updated cart into localstorage
+        
 }
 
 // Function to delete from cart
@@ -41,5 +52,25 @@ export function removefromCart(productid){
     });
     cart=newCart 
      saveToStorage(); //calling this function to save the updated cart into localstorage
+}
+
+export function calculateCartQuantity(){
+    let cartquantity=0;
+        cart.forEach((cartItem)=>{
+            cartquantity+=cartItem.quantity;
+        });
+        //putting the quantity on the page using DOM
+    return cartquantity;    
+}
+
+export function updateQuantity(productid,newQuantity){
+    let matchingitem;
+    cart.forEach((item)=>{
+        if(productid=== item.productid){
+            matchingitem=item;
+        }
+    });
+    matchingitem.quantity=newQuantity;
+    saveToStorage();
 
 }
