@@ -13,19 +13,31 @@ Automated Testing:- Using Code to test the code
         1 Basic Test Cases=tests if the code is working
         2 Edge Cases = Test with values that are tricky
 
-group of related tests = test suite        
+group of related tests = test suite   
 
+------------------------------------------------------------
+------------------------------------------------------------
+Testing Framework
 
+  External library that helps us write tests easier
+
+In automated tests we followed these steps:- 1) create test suite
+                                             2) create tests
+                                             3) Compare values and display result
+A testing framework helps us do this automatically and provides with some other features    
+We will use Jasmine                                         
 
 
 */
 import {formatCurrency} from '../scripts/utils/money.js';
 console.log('Converts cents into dollars');
 
+
+console.log('Test Suite: formatCurrency')    // 1) Create test suite
 console.log('Works with 0')
-if(formatCurrency(0)==='0.00'){
-    console.log('passed');
-}else{
+if(formatCurrency(0)==='0.00'){              // 2) Create tests
+    console.log('passed');                
+}else{                                       // 3) Compare values and display result
     console.log('failed');
 }
 
