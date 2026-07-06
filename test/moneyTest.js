@@ -25,7 +25,9 @@ In automated tests we followed these steps:- 1) create test suite
                                              2) create tests
                                              3) Compare values and display result
 A testing framework helps us do this automatically and provides with some other features    
-We will use Jasmine                                         
+We will use Jasmine  
+
+specRunner.html <=> tests.html loads all the files  (spec=test)
 
 
 */
