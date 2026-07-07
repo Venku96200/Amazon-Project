@@ -14,7 +14,11 @@ Benifits Of Classes
   # Private Properties and Methods:-
       We need to add # infront of the property or method if we want to make them private
 
+Using Classes in our project
 
+Go to products.js,  
+ As u can see that all the products are in the form of objects, hence we will
+ create a class to generate all these objects
 */
 
 class Cart{

@@ -1,3 +1,6 @@
+import {formatCurrency} from '../scripts/utils/money.js'
+
+
 export function getProduct(productId){
       let matchingproduct;
                 products.forEach((product)=>{
@@ -8,6 +11,60 @@ export function getProduct(productId){
       return matchingproduct;
 }
 
+// We will create a class to generate all these objects
+// Whats the use :- We will get some extra featres
+//                  like private/public
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+  constructor(productDetails){
+    this.id=productDetails.id;
+    this.image=productDetails.image;
+    this.name=productDetails.name;
+    this.rating=productDetails.rating;
+    this.priceCents=productDetails.priceCents; 
+  }
+
+  // Adding some important methods (Advantages of using Classes)
+  // We can use these methods for every object defined by class Product
+
+
+  // 1) Get the particular part of HTML for each product
+  getStarsUrl(){
+    return `images/ratings/rating-${this.rating.stars*10}.png`;
+  }
+
+  // 2) get the price of a product and formatit and return
+  getprice(){
+    return `$${formatCurrency(this.priceCents)}`;
+  }
+
+}
+
+/*   Example
+const product1=new Product({
+    id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+    name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+    rating: {
+      stars: 4.5,
+      count: 87
+    },
+    priceCents: 1090,
+    keywords: [
+      "socks",
+      "sports",
+      "apparel"
+    ]
+  });
+
+  console.log(product1);
+*/
+
+// CONVERTING REGULAR OBJECTS INTO ENHANCED OBJECTS
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -667,4 +724,13 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((productDetails)=>{           // This map goes inside the products array, and convert each 'Normal Object' into a  'class product's object'
+  return new Product(productDetails);
+});
+
+
+console.log(products);
+
+//We will loop throgh this array and create new products of each object
+// .map() loops through an array and for each value it runs some function
+// .map() creates a new array and what we return goes inside this new array
