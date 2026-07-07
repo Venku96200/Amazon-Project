@@ -137,6 +137,4 @@ There are two objects/Carts
 We can also use a function to generate multiple objects          
 
 
-
-
 */
