@@ -11,21 +11,24 @@ Benifits Of Classes
                               Has to be named 'constructor'
                               should not return anything
 
+  # Private Properties and Methods:-
+      We need to add # infront of the property or method if we want to make them private
+
 
 */
 
 class Cart{
     cartItems;
-    localStorageKey;
+    #localStorageKey;  // we made this private so that we cannot access it from outside the class
 
-    constructor(localStorageKey){
-        this.localStorageKey=localStorageKey;    //'this' points to the object that we generate
-        this.loadFromStorage();            //Stores cart object into localStorage
+    constructor(localStorageKey_parameter){
+        this.#localStorageKey=localStorageKey_parameter;    //'this' points to the object that we generate
+        this.#loadFromStorage();            //Stores cart object into localStorage
     }
 
 
-    loadFromStorage(){
-        this.cartItems= JSON.parse(localStorage.getItem(this.localStorageKey));  
+    #loadFromStorage(){                  // We will also make this private
+        this.cartItems= JSON.parse(localStorage.getItem(this.#localStorageKey));  
         if (!this.cartItems){
         this.cartItems = [{
             productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
@@ -42,7 +45,7 @@ class Cart{
     // We are implementing LocalStorage to save the items in the cart even if we switch webpage from Homepage to checkoutpage
     // Things to rem:-  1) Localstorage only stores string, hence we will have to use json
     saveToStorage(){
-    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
     }
 
 
