@@ -1,4 +1,4 @@
-import {formatCurrency} from '../scripts/utils/money.js'
+import {formatCurrency} from '../../scripts/utils/money.js'
 
 // Creating a test suite :- We will use describe(name,function) property  (Refer Documentation)
 // Creating a test :- we will use it(name,function) function
@@ -15,4 +15,4 @@ describe('test suite: formatCurrency',()=>{
     it('round up to the nearest cent', ()=>{
         expect(formatCurrency(2000.5)).toEqual('20.01'); 
     });
-});
+}); 
