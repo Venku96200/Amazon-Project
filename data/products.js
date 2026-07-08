@@ -67,6 +67,26 @@ class Clothing extends Product{
 
 }
 
+export let products=[];
+
+export function loadProducts(fun){   // fun is known as Callback (a function to run in the future) // We have worked with callbacks earlier, (setTimeout)
+  const xhr=new XMLHttpRequest();
+  xhr.addEventListener('load',()=>{
+   products=JSON.parse(xhr.response).map((productDetails)=>{     // This map goes inside the products array, and convert each 'Normal Object' into a  'class product's object'
+                                      if(productDetails.type==='clothing'){
+                                        return new Clothing(productDetails);
+                                      }
+                                      return new Product(productDetails);
+                                      });
+  fun();                                    
+  });
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  xhr.send();
+  
+}
+
+
+/*
 // CONVERTING REGULAR OBJECTS INTO ENHANCED OBJECTS
 export const products = [
   {
@@ -733,7 +753,7 @@ export const products = [
   }
   return new Product(productDetails);
 });
-
+*/
 
 //Built-in Class
 const date=new Date();

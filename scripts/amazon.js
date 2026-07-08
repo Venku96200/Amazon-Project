@@ -142,105 +142,109 @@ import {cart, addtocart} from '../data/cart.js';
 */
 
 import {cart, addtocart, calculateCartQuantity} from '../data/cart.js';
-import {products} from '../data/products.js';
+import {products, loadProducts} from '../data/products.js';
 import  formatCurrency  from './utils/money.js';
 
 
+loadProducts(renderProductsGrid);  //  This is asynchronous, so not good, so we will 1) put all this code in a function
+                                                                // 2) Give this function to loadProducts()                     
+                                                                
+function renderProductsGrid(){                                        
+            let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
+            products.forEach((product)=>{  //The products array is coming from data/products.js
+            const html_of_each_product=`<div class="product-container">
+                                        <div class="product-image-container">
+                                            <img class="product-image"
+                                            src="${product.image}">
+                                        </div>
 
-let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string
-products.forEach((product)=>{  //The products array is coming from data/products.js
-const html_of_each_product=`<div class="product-container">
-                            <div class="product-image-container">
-                                <img class="product-image"
-                                src="${product.image}">
-                            </div>
+                                        <div class="product-name limit-text-to-2-lines">
+                                            ${product.name}
+                                        </div>
 
-                            <div class="product-name limit-text-to-2-lines">
-                                ${product.name}
-                            </div>
+                                        <div class="product-rating-container">
+                                            <img class="product-rating-stars"
+                                            src="${product.getStarsUrl()}">
+                                            <div class="product-rating-count link-primary">
+                                            ${product.rating.count}
+                                            </div>
+                                        </div>
 
-                            <div class="product-rating-container">
-                                <img class="product-rating-stars"
-                                src="${product.getStarsUrl()}">
-                                <div class="product-rating-count link-primary">
-                                ${product.rating.count}
-                                </div>
-                            </div>
+                                        <div class="product-price">
+                                        ${product.getprice()}
+                                        </div>
 
-                            <div class="product-price">
-                             ${product.getprice()}
-                            </div>
+                                        <div class="product-quantity-container">
+                                            <select class="js-quantity-selector-${product.id}">
+                                            <option selected value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            </select>
+                                        </div>
+                                        ${product.extraInfoHTML()}      
 
-                            <div class="product-quantity-container">
-                                <select class="js-quantity-selector-${product.id}">
-                                <option selected value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                                </select>
-                            </div>
-                            ${product.extraInfoHTML()}      
+                                        <div class="product-spacer"></div>
 
-                            <div class="product-spacer"></div>
+                                        <div class="added-to-cart js-added-to-cart-${product.id}">
+                                            <img src="images/icons/checkmark.png">
+                                            Added
+                                        </div>
 
-                            <div class="added-to-cart js-added-to-cart-${product.id}">
-                                <img src="images/icons/checkmark.png">
-                                Added
-                            </div>
+                                        <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}" >
+                                            Add to Cart
+                                        </button>
+                                        </div>`;
+            productsHTML+=html_of_each_product;                            
+            });
 
-                            <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}" >
-                                Add to Cart
-                            </button>
-                            </div>`;
-productsHTML+=html_of_each_product;                            
-});
+            //Putting the productsHTML on the webpage using DOM
 
-//Putting the productsHTML on the webpage using DOM
+            document.querySelector('.js-products-grid').innerHTML=productsHTML;
 
-document.querySelector('.js-products-grid').innerHTML=productsHTML;
-
-// Getting the quantity from Quantity selector
-let quantity_selected=0;
-document.querySelector('.js-quantity-selector')
+            // Getting the quantity from Quantity selector
+            let quantity_selected=0;
+            document.querySelector('.js-quantity-selector')
 
 
-// Making all the ADD TO CART buttons interactive
-// We moved the addtocart() function to cart.js
+            // Making all the ADD TO CART buttons interactive
+            // We moved the addtocart() function to cart.js
 
 
-//Making that the ADDED pops up
-function making_added_popup(productid){
-        document.querySelector(`.js-added-to-cart-${productid}`).classList.add('js-done');
-        document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('added-to-cart');
-        setTimeout(()=>{
-            document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('js-done');
-            document.querySelector(`.js-added-to-cart-${productid}`).classList.add('added-to-cart');
-            
-        },1000); 
+            //Making that the ADDED pops up
+            function making_added_popup(productid){
+                    document.querySelector(`.js-added-to-cart-${productid}`).classList.add('js-done');
+                    document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('added-to-cart');
+                    setTimeout(()=>{
+                        document.querySelector(`.js-added-to-cart-${productid}`).classList.remove('js-done');
+                        document.querySelector(`.js-added-to-cart-${productid}`).classList.add('added-to-cart');
+                        
+                    },1000); 
+            }
+
+            //Finding the total quantity & putting the quantity on the page using DOM
+            function updateCartquantity(){
+                document.querySelector('.js-cart-quantity').innerHTML=calculateCartQuantity(); // Updates the cartquantity when page refreshes.
+            }
+            updateCartquantity();
+
+
+
+            // WHAT ALL SHOULD HAPPEN WHEN WE PRESS ADD TO CART BUTTON
+            document.querySelectorAll('.js-add-to-cart')
+            .forEach((button)=>{
+                button.addEventListener('click',()=>{
+                    const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
+                    let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value; //Getting the quantity from quantity selector
+                    making_added_popup(productid);
+                    addtocart(productid,Quantity);
+                    updateCartquantity();
+                });
+            });
 }
-
-//Finding the total quantity & putting the quantity on the page using DOM
-function updateCartquantity(){
-    document.querySelector('.js-cart-quantity').innerHTML=calculateCartQuantity(); // Updates the cartquantity when page refreshes.
-}
-updateCartquantity();
-
-
-
-// WHAT ALL SHOULD HAPPEN WHEN WE PRESS ADD TO CART BUTTON
-document.querySelectorAll('.js-add-to-cart')
-.forEach((button)=>{
-    button.addEventListener('click',()=>{
-        const productid=button.dataset.productId;        // Gives all the data attributes for the <button> Add to cart</button> element
-        let Quantity=document.querySelector(`.js-quantity-selector-${productid}`).value; //Getting the quantity from quantity selector
-        making_added_popup(productid);
-        addtocart(productid,Quantity);
-        updateCartquantity();
-    });
- });

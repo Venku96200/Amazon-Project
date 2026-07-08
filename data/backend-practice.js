@@ -56,6 +56,8 @@ Backend responds with different types of data
  Using a browser is similar to making a GET request
  but the browser doesnt displays the raw data, it converts internally
 
+
+  In our project we will load the product details from backend instead of storing them here
 */                    
 
 const xhr=new XMLHttpRequest();  //creates a new HTTP message to send to the backend(message = request)
