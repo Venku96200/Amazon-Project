@@ -185,6 +185,7 @@ const html_of_each_product=`<div class="product-container">
                                 <option value="10">10</option>
                                 </select>
                             </div>
+                            ${product.extraInfoHTML()}      
 
                             <div class="product-spacer"></div>
 

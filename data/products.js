@@ -14,6 +14,9 @@ export function getProduct(productId){
 // We will create a class to generate all these objects
 // Whats the use :- We will get some extra featres
 //                  like private/public
+
+
+//Parent Class
 class Product {
   id;
   image;
@@ -26,6 +29,9 @@ class Product {
     this.name=productDetails.name;
     this.rating=productDetails.rating;
     this.priceCents=productDetails.priceCents; 
+  }
+  extraInfoHTML(){
+    return '';
   }
 
   // Adding some important methods (Advantages of using Classes)
@@ -44,25 +50,22 @@ class Product {
 
 }
 
-/*   Example
-const product1=new Product({
-    id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    image: "images/products/athletic-cotton-socks-6-pairs.jpg",
-    name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
-    rating: {
-      stars: 4.5,
-      count: 87
-    },
-    priceCents: 1090,
-    keywords: [
-      "socks",
-      "sports",
-      "apparel"
-    ]
-  });
+//Child Class 
+class Clothing extends Product{
+  sizeChartLink;
+  constructor(productDetails){
+    super(productDetails);
+    this.sizeChartLink=productDetails.sizeChartLink;
+  }
 
-  console.log(product1);
-*/
+  extraInfoHTML(){ //this will override the extraInfoHTML() method from parent class, this is known as Method Override
+    return `
+    <a href="${this.sizeChartLink}" target="_blank"> Size Chart</a>
+    `;
+
+  }
+
+}
 
 // CONVERTING REGULAR OBJECTS INTO ENHANCED OBJECTS
 export const products = [
@@ -724,13 +727,81 @@ export const products = [
       "mens"
     ]
   }
-].map((productDetails)=>{           // This map goes inside the products array, and convert each 'Normal Object' into a  'class product's object'
+].map((productDetails)=>{     // This map goes inside the products array, and convert each 'Normal Object' into a  'class product's object'
+  if(productDetails.type==='clothing'){
+    return new Clothing(productDetails);
+  }
   return new Product(productDetails);
 });
 
 
-console.log(products);
 
-//We will loop throgh this array and create new products of each object
-// .map() loops through an array and for each value it runs some function
-// .map() creates a new array and what we return goes inside this new array
+
+
+
+
+
+
+/* Example of Inheritanced class
+const tshirt = new Clothing({
+    id: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
+    image: "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
+    name: "Adults Plain Cotton T-Shirt - 2 Pack",
+    rating: {
+      stars: 4.5,
+      count: 56
+    },
+    priceCents: 799,
+    keywords: [
+      "tshirts",
+      "apparel",
+      "mens"
+    ],
+    type: "clothing",
+    sizeChartLink: "images/clothing-size-chart.png"
+  });
+
+  console.log(tshirt);
+*/
+
+
+/*   Example
+const product1=new Product({
+    id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+    image: "images/products/athletic-cotton-socks-6-pairs.jpg",
+    name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
+    rating: {
+      stars: 4.5,
+      count: 87
+    },
+    priceCents: 1090,
+    keywords: [
+      "socks",
+      "sports",
+      "apparel"
+    ]
+  });
+
+  console.log(product1);
+*/
+
+
+/*  We will loop throgh this array and create new products of each object
+    .map() loops through an array and for each value it runs some function
+    .map() creates a new array and what we return goes inside this new array
+    --------------------------------------------------------------------------------
+
+    Inheritance Lets us reuse the code
+    We will use inheritance to create sub-categories like (clothing, appliances , etc)
+    Procuct class = Parent Class
+    Clothing,Appliances,etc = Child Class
+
+    We can also use the constructor from the parent class in the child class  using super() key word
+    If we dont create a constructor inside the child class, then by default the child class will use the constructors from parent class
+
+    --------------------------------------------
+
+    polymorphism = use a mthod without knowng the class
+      Ex:- we use ${product.extraInfoHTML()} in amazon.js without checking the class of the product
+           The class will determine what this method will do
+*/    
