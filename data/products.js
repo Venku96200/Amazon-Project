@@ -735,6 +735,42 @@ export const products = [
 });
 
 
+//Built-in Class
+const date=new Date();
+console.log(date);
+console.log(date.toLocaleTimeString()) // returns the time
+
+/*
+DayJs uses this Date class behind the scenes
+DayJs gives us a lot of extra features
+so we use DayJS instead of Date directly.
+*/
+
+/* More details about 'this'
+   'this' lets an object access its own properties
+   'this' can be used anywhere in our code
+*/
+
+console.log(this)  //Undefined
+
+//Using 'this' inside a function
+
+function logthis(){
+  console.log(this);
+}
+
+logthis();  // undefined
+
+//Specal feature of 'this'
+//     Inside a function, We can change "this" to whatever we want
+
+logthis.call('hello')  // we give 'hello' to this
+
+//"this" keeps the value that it had outside the arrow function
+
+
+
+
 
 
 
@@ -804,4 +840,9 @@ const product1=new Product({
     polymorphism = use a mthod without knowng the class
       Ex:- we use ${product.extraInfoHTML()} in amazon.js without checking the class of the product
            The class will determine what this method will do
+
+   ------------------------------------------------------------
+   
+   Built-in classes = classes that are provided by the 
+    Ex:- Date()=> Generates an object that represent the current date
 */    
