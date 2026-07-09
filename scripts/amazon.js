@@ -147,7 +147,7 @@ import  formatCurrency  from './utils/money.js';
 
 
 loadProducts(renderProductsGrid);  //  This is asynchronous, so not good, so we will 1) put all this code in a function
-                                                                // 2) Give this function to loadProducts()                     
+                                                                                  // 2) Give this function to loadProducts()                     
                                                                 
 function renderProductsGrid(){                                        
             let productsHTML='';  // Accumulator pattern :-  We have to combine all the HTML for all the products into one string

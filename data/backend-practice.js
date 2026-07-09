@@ -58,6 +58,15 @@ Backend responds with different types of data
 
 
   In our project we will load the product details from backend instead of storing them here
+
+  -----------------------------------------------------------
+
+  promises:-
+  # Better way to handle asynchronous code
+  # Similar to done() function
+  # Let us wait for some code to finish, before going to the next step
+  # promise is a class
+   Go to checkout.js
 */                    
 
 const xhr=new XMLHttpRequest();  //creates a new HTTP message to send to the backend(message = request)

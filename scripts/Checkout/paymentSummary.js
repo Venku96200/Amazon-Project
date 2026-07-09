@@ -19,7 +19,7 @@ import formatCurrency from "../utils/money.js";
 
 
 export  function renderPaymentSummary(){
-    console.log(products);
+    
     let productPriceCents=0;
     let shippingPriceCents=0;
     cart.forEach((cartItem)=>{

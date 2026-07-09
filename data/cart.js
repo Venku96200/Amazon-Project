@@ -94,3 +94,16 @@ export function updateDeliveryOption(productId, deliveryOptionId){
      matchingItem.deliveryOptionId=deliveryOptionId;
      saveToStorage();
 }
+
+
+//Loading cart from backend (practice)
+
+export function loadCart(fun){   // fun is known as Callback (a function to run in the future) // We have worked with callbacks earlier, (setTimeout)
+  const xhr=new XMLHttpRequest();
+  xhr.addEventListener('load',()=>{
+    console.log(xhr.response);
+  fun();   
+  });
+  xhr.open('GET', 'https://supersimplebackend.dev/cart');
+  xhr.send();
+}
