@@ -1,12 +1,12 @@
 import { renderOrderSummary } from "./Checkout/orderSummary.js";
 import { renderPaymentSummary } from "./Checkout/paymentSummary.js";
-import { loadProducts } from "../data/products.js";
+import { loadProductsFetch } from "../data/products.js";
 //import '../data/cart-oops.js';  // to import entire file
 //import '../data/cart-class.js'; 
 //import '../data/backend-practice.js';
 import { loadCart } from "../data/cart.js";
 
-// Promise is a built-in class we need to give it a function
+/* Promise is a built-in class we need to give it a function
 // It will run this function immediately
 //This inner function gets a parameter called resolve
 // resolve is a function, It lets us control when to go to the next step
@@ -25,6 +25,8 @@ new Promise((resolve)=>{
      renderOrderSummary();
      renderPaymentSummary();
 })
+*/
+
 /*
 1) A promise is created which runs the loadProducts() imediately
 2) After the Products are loaded from backend into the Product array the resolve() gets executed
@@ -62,7 +64,8 @@ Total idea:-
 # Lets us run multiple promises at the same time
 # and wait for all of them to finish
 
-
+*/
+/* Just promise.all 
 
 Promise.all([
     new Promise((resolve)=>{
@@ -81,8 +84,27 @@ Promise.all([
     renderOrderSummary();
     renderPaymentSummary();
 });
+*/
+
+// Using promise.all with fetch
 
 
+Promise.all([
+    loadProductsFetch(),  // This returns a promise
+
+    new Promise((resolve)=>{
+        loadCart(()=>{
+            resolve();
+        });
+    })
+
+]).then(()=>{
+    renderOrderSummary();
+    renderPaymentSummary();
+});
+
+
+/*
 SUMMARY OF PROMISES:-
 
 Promises are a better way to wait for asynchronous code to finish compared to callbacks
@@ -90,17 +112,6 @@ They Help us avoid nesting and keep our code relatively flat
 Promises also have more features like:- promise.all() which lets us run multiple promises at the same time
 We can also add parameters into resolve() function
 */
-
-
-
-
-
-
-
-
-
-
-
 
 /*  CALLBACKS
 
@@ -121,4 +132,6 @@ loadProducts(()=>{
 If we have lots of callbacks our code will become more and more nested
 Promises solve this problem by flattening the code
 */
+
+
 

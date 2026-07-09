@@ -108,7 +108,7 @@ export function renderOrderSummary(){
             cart.forEach((cartItem)=>{
             const productID= cartItem.productId;
             const matchingproduct=getProduct(productID);
-        
+            
             const deliverOptionId=cartItem.deliveryOptionId;
             const deliveryOption=getDeliveryOption(deliverOptionId); 
             const dateString=calculateDeliveryDate(deliveryOption);
@@ -127,7 +127,7 @@ export function renderOrderSummary(){
                                             ${matchingproduct.name}
                                             </div>
                                             <div class="product-price">
-                                            $${matchingproduct.getprice()}
+                                            ${matchingproduct.getprice()}
                                             </div>
                                             <div class="product-quantity">
                                             

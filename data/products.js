@@ -791,12 +791,6 @@ logthis.call('hello')  // we give 'hello' to this
 
 
 
-
-
-
-
-
-
 /* Example of Inheritanced class
 const tshirt = new Clothing({
     id: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
@@ -867,3 +861,35 @@ const product1=new Product({
 
   -------------------------------------------------------------------------  
 */    
+
+/*
+fetch()
+
+# A better way to make HTTP requests
+# fetch() uses promise
+# By default fetch() does GET request
+# we can use response.json() to get data
+# response.json() is asynchronous it returns a promise
+
+*/
+
+export function loadProductsFetch(){
+  const promise=fetch('https://supersimplebackend.dev/products')
+  .then((response)=>{
+    return response.json();
+  }).then((productsData)=>{
+    products=productsData.map((productDetails)=>{     // This map goes inside the products array, and convert each 'Normal Object' into a  'class product's object'
+                                  if(productDetails.type==='clothing'){
+                                    return new Clothing(productDetails);
+                                  }
+                                  return new Product(productDetails);
+                                  });                           
+  });
+  return promise;
+}
+
+/*
+loadProductsFetch().then(()=>{
+  console.log('nect step');
+});
+*/
