@@ -134,4 +134,62 @@ Promises solve this problem by flattening the code
 */
 
 
+/*
+Async  Await = # Even better way to handle asynchronoss code
+               # Async await is a shortcut for promises
+*/
 
+async function load(){        //async makes this function a promise
+    console.log('load page');
+    return 'value1';
+}
+/*The top snippet is shortcut for
+
+function load(){
+    return new Promise((resolve)=>{
+        console.log('load page');
+        resolve('value1')
+    });
+}
+
+
+loadPage().then((value)=>{
+    console.log('next step');
+})
+*/
+
+/*
+  Whats the point of this feature we already have promises and fetch()
+  with async we get some additional features like
+  await:- Lets us wait for a promise to finish, before going to the next line
+*/
+
+
+async function loadPage(){        //async makes this function a promise
+    console.log('load page');
+    await loadProductsFetch()     // await lets us write asynchronous code like normal code
+    return 'value1';
+}
+
+/*the top code is shortcut for
+
+function loadpage(){
+return new Promise((resolve)=>{
+    console.log('load page);
+    resolve();
+    }).then(()=>{
+        return loadProductsFetch();
+    }).then(()=>{
+        return new Promise((resolve)=>{
+            resolve('value2);
+        });
+    });
+}
+
+
+
+
+*/
+loadPage().then((value)=>{
+    console.log('next step')
+});
